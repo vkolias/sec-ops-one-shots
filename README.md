@@ -5,6 +5,8 @@ Sec Ops One Shots is a collection of standalone, self-contained Python scripts f
 ## Table of Contents
 
 - [QRadar Offense Analyzer with OpenAI](#qradar-offense-analyzer-with-openai)
+- [QRadar Offense to JIRA Issue](#qradar-offense-to-jira-issue)
+- [QRadar Rule Properties Extractor](#qradar-rule-properties-extractor)
 
 
 ## [QRadar Offense Analyzer with OpenAI](scripts/qradar/offensetoopenai.py)
@@ -114,3 +116,39 @@ python offensetojira.py \
 2024-06-10 14:55:13 [INFO] Creating jira issue...
 2024-06-10 14:55:14 [INFO] Jira issue SEC-456 successfully created.
 ```
+---
+---
+## [QRadar Rule Properties Extractor](scripts/qradar/ruleinfo.py)
+This script connects to a QRadar instance, downloads all **custom detection rules**, parses them from the system export XML, and exports structured metadata (e.g., name, type, owner, creation date, logic) to a **TSV file**.
+
+It’s a fast, portable, dependency-free way to generate reports or audits of QRadar detection logic.
+
+---
+
+## Features
+
+- Connects to QRadar via the REST API (`/config/extension_management`)
+- Triggers a custom rules export task and polls for completion
+- Extracts and parses rules from the exported ZIP archive
+- Outputs a clean `.tsv` file with detailed metadata:
+  - Rule name, type, owner, creation/modification dates, enable status, offense type, and test logic
+- Uses only standard Python libraries — no external dependencies
+
+---
+
+## Requirements
+
+- Python 3.7 or higher
+- QRadar API token with permissions to export content and list rule metadata
+
+---
+
+## Setup
+
+### 1. Environment Variables
+
+Set the following environment variables before running:
+
+```bash
+export QRADAR_KEY="your_qradar_api_token"
+export QRADAR_BASE_URL="https://your.qradar.instance/api"
